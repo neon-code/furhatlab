@@ -3,8 +3,8 @@ package furhatos.app.fruitseller.flow
 import furhatos.app.fruitseller.nlu.*
 import furhatos.flow.kotlin.*
 import furhatos.nlu.common.*
-import furhatos.nlu.SimpleIntent
 import furhatos.util.Language
+import furhatos.nlu.SimpleIntent
 
 val Start : State = state(Interaction) {
 
@@ -21,7 +21,11 @@ val Start : State = state(Interaction) {
 
     //If user asks for fruit directly
     onResponse<BuyFruit> {
-        furhat.say("${it.intent.fruit}, what a lovely choice!")
+        val fruits = it.intent.fruits
+        furhat.say("${fruits.text}, what a lovely choice!")
+        fruits.list.forEach {
+            users.current.order.fruits.list.add(it)
+        }
     }
 
     //Normal conversation, back to the normal assignment
@@ -63,7 +67,11 @@ val TakingOrder = state {
     }
 
     onResponse<BuyFruit> {
-        furhat.say("${it.intent.fruit}, what a lovely choice!")
+        val fruits = it.intent.fruits
+        furhat.say("${fruits.text}, what a lovely choice!")
+        fruits.list.forEach {
+            users.current.order.fruits.list.add(it)
+        }
     }
 }
 
